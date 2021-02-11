@@ -1,0 +1,42 @@
+/*!
+ * Start Bootstrap - Blog Home (https://startbootstrap.com/template/blog-home)
+ * Copyright 2013-2020 Start Bootstrap
+ * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-blog-home/blob/master/LICENSE)
+ */
+
+@font-face {
+  font-family: 'Shabnam';
+  font-style: normal;
+  src:  url('fonts/Shabnam.woff?') format('woff');
+}
+
+@font-face {
+  font-family: 'Tanha';
+  font-style: normal;
+  src:  url('fonts/Tanha.woff?') format('woff');
+}
+
+
+
+body {
+  padding-top: 56px;
+  font-family: 'Shabnam';
+}
+
+.site-title{
+	font-family: 'Tanha';
+}
+
+.site-header{
+	font-size: 40;
+}
+
+@media screen and (max-width: 950px) {
+ .site-header{
+ 	font-size: 30px
+ }}
+
+@media screen and (max-width: 450px) {
+ .site-header{
+ 	font-size: 20px
+ }}

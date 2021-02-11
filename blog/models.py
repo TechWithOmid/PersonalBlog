@@ -1,10 +1,12 @@
 from django.db import models
 from django.utils import timezone
+from ckeditor.fields import RichTextField
 
 
 class Author(models.Model):
     avatar = models.ImageField(upload_to='files/images/avatar/', blank=True)
-    name = models.CharField(max_length=128, blank=False, null=False)
+    username = models.CharField(max_length=128, blank=False, null=False)
+    name = models.CharField(max_length=128, blank=False)
     description = models.TextField(blank=False, null=False)
 
     def __str__(self):
@@ -19,7 +21,7 @@ class Article(models.Model):
 
     title = models.CharField(max_length=128, null=False, blank=False)
     cover = models.ImageField(upload_to='files/images/article_cover/')
-    content = models.TextField()
+    content = RichTextField()
     created_date = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     category = models.ManyToManyField('Category')
