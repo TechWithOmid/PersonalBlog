@@ -17,7 +17,8 @@ class HomePage(TemplateView):
 class ContentPage(TemplateView):
     def get(self, request, format=None, **kwargs):
         article_id = self.kwargs.get('article_id')
-        article = get_object_or_404(Article, pk=article_id)
+        article = Article.objects.filter(publish_status='p')
+        article = get_object_or_404(article, pk=article_id)
 
         context = {
             'article': article,
