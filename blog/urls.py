@@ -3,4 +3,5 @@ from . import views
 
 urlpatterns = [
     path('', views.HomePage.as_view(), name='home_page'),
+    path('article/<int:article_id>', views.ContentPage.as_view(), name="content_page"),
 ]

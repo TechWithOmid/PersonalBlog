@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView
-from .models import Article, Author, Category
+from .models import Article
 
 
 class HomePage(TemplateView):
@@ -12,3 +12,14 @@ class HomePage(TemplateView):
         }
 
         return render(request, 'home.html', context)
+
+
+class ContentPage(TemplateView):
+    def get(self, request, format=None, **kwargs):
+        article_id = self.kwargs.get('article_id')
+        article = get_object_or_404(Article, pk=article_id)
+
+        context = {
+            'article': article,
+        }
+        return render(request, 'content.html', context)
