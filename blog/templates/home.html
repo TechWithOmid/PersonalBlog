@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog{% endblock %}
+
+{% block content %}
+<!-- Blog Entries Column -->
+      <div class="col-md-8">
+
+        <h1 class="my-3 site-header">
+          <small>جایی برای نوشتن تجربیات و دانسته هام</small>
+        </h1>
+
+        <!-- Blog Post -->
+        <div class="card mb-4">
+          <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+          <div class="card-body">
+            <h2 class="card-title">آموزش پایتون</h2>
+            <p class="card-text">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی</p>
+            <a href="#" class="badge badge-info pager-button">بیشتر &#8592; </a>
+          </div>
+          <div class="card-footer text-muted">
+            منتشر شده در January 1, 2020 by
+            <a href="#">امید</a>
+          </div>
+        </div>
+
+
+        <!-- Pagination -->
+        <ul class="pagination justify-content-center mb-4">
+          <li class="page-item">
+            <a class="page-link" href="#">&rarr; قدیمی تر</a>
+          </li>
+          <li class="page-item disabled">
+            <a class="page-link" href="#">جدیدتر &larr;</a>
+          </li>
+        </ul>
+
+      </div>
+{% endblock %}

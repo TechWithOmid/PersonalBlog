@@ -1,0 +1,13 @@
+body{
+	direction: rtl;
+	text-align: right;
+}
+
+.navbar-nav{
+	margin-left: initial !important;
+	margin-right:auto;
+}
+
+.pager-button{
+	float: left !important;
+}
