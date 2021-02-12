@@ -1,0 +1,16 @@
+# OS Stuff
+.DS_Store
+.idea/
+
+# Virtual Env
+venv/
+PersonalBlog/__pycache__/
+
+# Database
+db.sqlite3
+
+# Migrations
+PersonalBlog/migrations/
+
+# Static files
+files/
