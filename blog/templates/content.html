@@ -13,8 +13,8 @@
 
         <!-- Author -->
         <p class="lead">
-          نویسنده
-          <a href="#">{{ article.author }}</a>
+            نویسنده
+            <a href="#">{{ article.author }}</a>
         </p>
 
         <hr>
@@ -25,64 +25,46 @@
         <hr>
 
         <!-- Preview Image -->
-        <img class="img-fluid rounded" src="{{ article.cover.url}}" width="900" height="300"
+        <img class="img-fluid rounded" src="{{ article.cover.url }}" width="900" height="300"
              alt="{{ article.title }}">
 
         <hr>
 
-            <p>{{ article.content|safe }}</p>
+        <p>{{ article.content|safe }}</p>
 
         <hr>
 
         <!-- Comments Form -->
         <div class="card my-4">
-          <h5 class="card-header">کامنت:</h5>
-          <div class="card-body">
-            <form>
-              <div class="form-group">
-                <textarea class="form-control" rows="3"></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary">ارسال</button>
-            </form>
-          </div>
+            <h5 class="card-header">کامنت:</h5>
+            <div class="card-body">
+                <form>
+{#                    <div class="form-group">#}
+{#                        <textarea class="form-control" rows="3">{{ comment_form }}</textarea>#}
+{#                    </div>#}
+                    {% csrf_token %}
+                    {{ comment_form }}
+                    <button type="submit" class="btn btn-primary">ارسال</button>
+                </form>
+            </div>
         </div>
 
         <!-- Single Comment -->
-        <div class="media mb-4">
-          <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-          <div class="media-body">
-            <h5 class="mt-0">علیرضا</h5>
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است
-          </div>
+        <div style="margin-bottom: 100px">
+            {% for comment in comments %}
+                <div class="comments shadow p-3 mb-5 bg-white rounded" style="padding: 20px;">
+                    <p class="font-weight-bold">
+                        {{ comment.name }}
+                        <span class=" text-muted font-weight-normal">
+                            {{ comment.comment_date }}
+                        </span>
+                    </p>
+                    {{ comment.body | linebreaks }}
+                </div>
+            {% endfor %}
         </div>
 
-        <!-- Comment with nested comments -->
-        <div class="media mb-4">
-          <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-          <div class="media-body">
-            <h5 class="mt-0">احمد</h5>
-       لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است
-
-            <div class="media mt-4">
-              <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-              <div class="media-body">
-                <h5 class="mt-0">امید</h5>
-لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است
-              </div>
-            </div>
-
-            <div class="media mt-4">
-              <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-              <div class="media-body">
-                <h5 class="mt-0">احمد</h5>
- لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
+    </div>
 
 
 {% endblock %}

@@ -70,7 +70,7 @@
           <img class="card-img-top" src="{{ article.cover.url}}" alt="Card image cap"
                width="750px", height="350px">
           <div class="card-body">
-            <a href="{% url 'content_page' article.id %}">
+            <a href="{% url 'content_page' article.id %}?article={{ article.id }}">
               <h2 class="card-title">{{ article.title}}</h2>
             </a>
             <p class="card-text">
