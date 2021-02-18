@@ -28,7 +28,7 @@ body {
 }
 
 .site-header{
-	font-size: 40;
+	font-size: 40px;
 }
 
 @media screen and (max-width: 950px) {
@@ -40,3 +40,5 @@ body {
  .site-header{
  	font-size: 20px
  }}
+
+

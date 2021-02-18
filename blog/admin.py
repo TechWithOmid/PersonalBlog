@@ -13,6 +13,7 @@ class CommentAdmin(admin.ModelAdmin):
     list_filter = ['comment_date', 'active']
     list_search = ['name', 'email', 'body']
     actions = ['approve_comment']
+    list_editable = ['active']
 
     def approve_comment(self, request, queryset):
         queryset.update(active=True)

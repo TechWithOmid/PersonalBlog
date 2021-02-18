@@ -34,11 +34,9 @@ class Article(models.Model):
     publish_status = models.CharField(max_length=1, choices=publish_choices, null=False,
                                       blank=False, default='d', verbose_name="وضعیت انتشار")
 
-
     class Meta:
         verbose_name = "مقاله"
         verbose_name_plural = "مقالات"
-
 
     def __str__(self):
         return self.title
@@ -56,10 +54,10 @@ class Category(models.Model):
 
 
 class Comment(models.Model):
-    article = models.ForeignKey('Article', on_delete=models.CASCADE, verbose_name="مقاله‌ی مرتبط")
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name="مقاله‌ی مرتبط")
     name = models.CharField(max_length=80, verbose_name="نام")
     email = models.EmailField(verbose_name="ایمیل")
-    body = models.TextField(verbose_name="کامنت")
+    body = models.TextField(verbose_name="نظر‌")
     comment_date = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ")
     active = models.BooleanField(default=False, verbose_name="نمایش داده شود؟")
 
@@ -69,7 +67,7 @@ class Comment(models.Model):
 
     @property
     def comment_summery(self):
-        verbose_name="خلاصه"
+        verbose_name = "خلاصه"
         return truncatechars(self.body, 100)
 
     def __str__(self):

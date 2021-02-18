@@ -70,41 +70,41 @@ class SearchArticle(TemplateView):
         return render(request, 'search_result.html', context)
 
 
-class ContentPage(TemplateView):
-    cataeorys = Category.objects.all()
-    comment_form = CommentForm()
-
-    context = {
-        'categorys': cataeorys,
-        'comment_form': comment_form,
-
-    }
-
-    def post(self, request, format=None, **kwargs):
-
-        if self.comment_form.is_valid():
-            new_comment = self.comment_form.save(commit=False)
-            new_comment.article = request.POST.get('article')
-            new_comment.save()
-
-            self.context['new_comment'] = new_comment
-
-    def get(self, request, format=None, **kwargs):
-        comments = Comment.objects.filter(active=True).order_by('-comment_date')
-        article_id = self.kwargs.get('article_id')
-        article = Article.objects.filter(publish_status='p')
-        article = get_object_or_404(article, pk=article_id)
-        self.context['article'] = article
-        self.context['comments'] = comments
-        print(self.context.keys())
-        return render(request, 'content.html', self.context)
+# class ContentPage(TemplateView):
+#     cataeorys = Category.objects.all()
+#     comment_form = CommentForm()
+#
+#     context = {
+#         'categorys': cataeorys,
+#         'comment_form': comment_form,
+#
+#     }
+#
+#     def post(self, request, format=None, **kwargs):
+#
+#         if self.comment_form.is_valid():
+#             new_comment = self.comment_form.save(commit=False)
+#             new_comment.article = request.POST.get('article')
+#             new_comment.save()
+#
+#             self.context['new_comment'] = new_comment
+#
+#     def get(self, request, format=None, **kwargs):
+#         comments = Comment.objects.filter(active=True).order_by('-comment_date')
+#         article_id = self.kwargs.get('article_id')
+#         article = Article.objects.filter(publish_status='p')
+#         article = get_object_or_404(article, pk=article_id)
+#         self.context['article'] = article
+#         self.context['comments'] = comments
+#         print(self.context.keys())
+#         return render(request, 'content.html', self.context)
 
 
 def ArticleDetail(request, **kwargs):
     category = Category.objects.all()
     article_id = kwargs.get('article_id')
-    article = Article.objects.filter(publish_status='p')
-    article = get_object_or_404(article, pk=article_id)
+    a = Article.objects.filter(publish_status='p')
+    article = get_object_or_404(a, pk=article_id)
 
     comments = Comment.objects.filter(active=True, article=article_id)
     new_comment = None
@@ -112,14 +112,8 @@ def ArticleDetail(request, **kwargs):
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid():
-            name = comment_form.cleaned_data['name']
-            email = comment_form.cleaned_data['email']
-            body = comment_form.cleaned_data['body']
-
-            new_comment = name.save(commit=False)
-            new_comment.email = email
-            new_comment.body = body
-            new_comment.article = article_id
+            new_comment = comment_form.save(commit=False)
+            new_comment.article = article
             new_comment.save()
     else:
         comment_form = CommentForm()

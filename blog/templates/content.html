@@ -32,25 +32,36 @@
 
         <p>{{ article.content|safe }}</p>
 
-        <hr>
-
-        <!-- Comments Form -->
-        <div class="card my-4">
-            <h5 class="card-header">کامنت:</h5>
-            <div class="card-body">
-                <form>
-{#                    <div class="form-group">#}
-{#                        <textarea class="form-control" rows="3">{{ comment_form }}</textarea>#}
-{#                    </div>#}
-                    {% csrf_token %}
-                    {{ comment_form }}
-                    <button type="submit" class="btn btn-primary">ارسال</button>
-                </form>
-            </div>
-        </div>
+        <br><br>
 
         <!-- Single Comment -->
         <div style="margin-bottom: 100px">
+            <h3>نظرات</h3>
+            <hr>
+
+            {% if new_comment %}
+                <h4>نظر شما در انتظار تایید است.</h4>
+            {% else %}
+                  <div class="shadow p-3 mb-5 bg-white rounded">
+                    <form method="post">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                {% csrf_token %}
+                                {{ comment_form.name }}
+                            </div>
+                            <div class="form-group col-md-6">
+                                {{ comment_form.email }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ comment_form.body }}
+                        </div>
+
+                        <button type="submit" class="btn btn-success">ارسال</button>
+                    </form>
+                </div>
+            {% endif %}
+
             {% for comment in comments %}
                 <div class="comments shadow p-3 mb-5 bg-white rounded" style="padding: 20px;">
                     <p class="font-weight-bold">
@@ -61,6 +72,8 @@
                     </p>
                     {{ comment.body | linebreaks }}
                 </div>
+            {% empty %}
+                <h4 style="text-align: center; margin-bottom: 100px; margin-top: 50px;">کامنتی وجود ندارد ...</h4>
             {% endfor %}
         </div>
 

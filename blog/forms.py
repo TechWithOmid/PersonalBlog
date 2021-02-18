@@ -2,7 +2,13 @@ from django import forms
 from .models import Comment
 
 
-class CommentForm(forms.Form):
-    name = forms.CharField(max_length=80)
-    email = forms.EmailField()
-    body = forms.CharField(widget=forms.Textarea)
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('name', 'email', 'body')
+
+        widgets = {
+            "name": forms.TextInput(attrs={'class': 'form-control bg-light text-dark', 'placeholder': 'نام'}),
+            "email": forms.TextInput(attrs={'class': 'form-control bg-light text-dark', 'placeholder': 'ایمیل'}),
+            "body": forms.Textarea(attrs={'class': 'form-control bg-light text-dark', 'placeholder': 'متن'})
+        }
