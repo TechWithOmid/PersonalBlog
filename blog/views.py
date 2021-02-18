@@ -106,7 +106,7 @@ def ArticleDetail(request, **kwargs):
     article = Article.objects.filter(publish_status='p')
     article = get_object_or_404(article, pk=article_id)
 
-    comments = Comment.objects.filter(active=True)
+    comments = Comment.objects.filter(active=True, article=article_id)
     new_comment = None
 
     if request.method == 'POST':
