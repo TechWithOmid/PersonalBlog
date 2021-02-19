@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Article, Category, Author, Comment
+from .models import Article, Category, Author
 
 
 class ArticleAdmin(admin.ModelAdmin):
@@ -8,18 +8,6 @@ class ArticleAdmin(admin.ModelAdmin):
     raw_id_fields = ('category',)
 
 
-class CommentAdmin(admin.ModelAdmin):
-    list_display = ['name', 'comment_summery', 'article', 'comment_date', 'active']
-    list_filter = ['comment_date', 'active']
-    list_search = ['name', 'email', 'body']
-    actions = ['approve_comment']
-    list_editable = ['active']
-
-    def approve_comment(self, request, queryset):
-        queryset.update(active=True)
-
-
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Category)
 admin.site.register(Author)
-admin.site.register(Comment, CommentAdmin)

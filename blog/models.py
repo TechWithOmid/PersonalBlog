@@ -1,8 +1,6 @@
 from django.db import models
 from django.utils import timezone
 from ckeditor.fields import RichTextField
-from django.template.defaultfilters import truncatechars
-from django.utils.html import format_html
 
 
 class Author(models.Model):
@@ -51,27 +49,4 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
-
-
-class Comment(models.Model):
-    article = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name="مقاله‌ی مرتبط")
-    name = models.CharField(max_length=80, verbose_name="نام")
-    email = models.EmailField(verbose_name="ایمیل")
-    body = models.TextField(verbose_name="نظر‌")
-    comment_date = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ")
-    active = models.BooleanField(default=False, verbose_name="نمایش داده شود؟")
-
-    class Meta:
-        verbose_name = "کامنت"
-        verbose_name_plural = "کامنت ها"
-
-    @property
-    def comment_summery(self):
-        verbose_name = "خلاصه"
-        return truncatechars(self.body, 100)
-
-    def __str__(self):
-        return f"Comment {self.body} by {self.name}"
-
-
 

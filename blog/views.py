@@ -1,9 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView
-from .models import Article, Category, Comment
+from .models import Article, Category
 from django.core.paginator import Paginator
 from django.db.models import Q
-from .forms import CommentForm
 
 
 class HomePage(TemplateView):
@@ -70,59 +69,63 @@ class SearchArticle(TemplateView):
         return render(request, 'search_result.html', context)
 
 
-# class ContentPage(TemplateView):
-#     cataeorys = Category.objects.all()
-#     comment_form = CommentForm()
-#
-#     context = {
-#         'categorys': cataeorys,
-#         'comment_form': comment_form,
-#
-#     }
-#
-#     def post(self, request, format=None, **kwargs):
-#
-#         if self.comment_form.is_valid():
-#             new_comment = self.comment_form.save(commit=False)
-#             new_comment.article = request.POST.get('article')
-#             new_comment.save()
-#
-#             self.context['new_comment'] = new_comment
-#
-#     def get(self, request, format=None, **kwargs):
-#         comments = Comment.objects.filter(active=True).order_by('-comment_date')
-#         article_id = self.kwargs.get('article_id')
-#         article = Article.objects.filter(publish_status='p')
-#         article = get_object_or_404(article, pk=article_id)
-#         self.context['article'] = article
-#         self.context['comments'] = comments
-#         print(self.context.keys())
-#         return render(request, 'content.html', self.context)
-
-
 def ArticleDetail(request, **kwargs):
     category = Category.objects.all()
     article_id = kwargs.get('article_id')
-    a = Article.objects.filter(publish_status='p')
-    article = get_object_or_404(a, pk=article_id)
-
-    comments = Comment.objects.filter(active=True, article=article_id)
-    new_comment = None
-
-    if request.method == 'POST':
-        comment_form = CommentForm(data=request.POST)
-        if comment_form.is_valid():
-            new_comment = comment_form.save(commit=False)
-            new_comment.article = article
-            new_comment.save()
-    else:
-        comment_form = CommentForm()
+    article = Article.objects.filter(publish_status='p')
+    article = get_object_or_404(article, pk=article_id)
 
     context = {
         'article': article,
         'categorys': category,
-        'comments': comments,
-        'new_comment': new_comment,
-        'comment_form': comment_form,
     }
     return render(request, 'content.html', context)
+
+
+# def ArticleComment(request, **kwargs):
+#     article_id = kwargs.get('article_id')
+#     category = Category.objects.all()
+#     new_comment = None
+#
+#     if request == 'POST':
+#         comment_form = CommentForm(data=request.POST)
+#         if comment_form.is_valid():
+#             new_comment = comment_form.save(commit=False)
+#             new_comment.article = article_id
+#             new_comment.save()
+#     else:
+#         comment_form = CommentForm()
+#
+#     context = {
+#         'categorys': category,
+#         'new_comment': new_comment,
+#         'comment_form': comment_form,
+#     }
+#
+
+# def ArticleDetail(request, **kwargs):
+#     category = Category.objects.all()
+#     article_id = kwargs.get('article_id')
+#     a = Article.objects.filter(publish_status='p')
+#     article = get_object_or_404(a, pk=article_id)
+#
+#     comments = Comment.objects.filter(active=True, article=article_id)
+#     new_comment = None
+#
+#     if request.method == 'POST':
+#         comment_form = CommentForm(data=request.POST)
+#         if comment_form.is_valid():
+#             new_comment = comment_form.save(commit=False)
+#             new_comment.article = article
+#             new_comment.save()
+#     else:
+#         comment_form = CommentForm()
+#
+#     context = {
+#         'article': article,
+#         'categorys': category,
+#         'comments': comments,
+#         'new_comment': new_comment,
+#         'comment_form': comment_form,
+#     }
+#     return render(request, 'content.html', context)

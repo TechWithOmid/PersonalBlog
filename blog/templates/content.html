@@ -5,18 +5,18 @@
 {% endblock %}
 
 {% block content %}
-
-    <div class="col-lg-8">
-        <div class="shadow p-3 mb-5 mt-4 bg-white rounded">
+    <div>
            <!-- Title -->
             <h1 class="mt-4">{{ article.title }}</h1>
 
             <!-- Author -->
             <h6 class="lead mt-3 mb-3 article-info">
-                <spam>نویسنده: 
-                <a href="#">{{ article.author }}</a></spam> | 
+                <spam>نویسنده:
+                <a href="#">{{ article.author }}</a></spam> |
                 <spam class="text-muted small">منتشر شده در : {{ article.created_date|date }}</spam>
-            </h6>
+            </h6></div>
+    <div class="col-lg-8">
+        <div class="shadow p-3 mb-5 mt-4 bg-white rounded">
 
 
             <!-- Preview Image -->
