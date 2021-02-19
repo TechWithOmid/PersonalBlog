@@ -10,11 +10,12 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>OMID  {% block title %}Blog{% endblock %}</title>
+  <title>OMID {% block title %}Blog{% endblock %}</title>
 
   <!-- Bootstrap core CSS -->
   <!-- <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
   <!-- Custom styles for this template -->
   <link href="{% static 'blog/css/blog-home.css' %}" rel="stylesheet">
@@ -28,7 +29,8 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <a class="navbar-brand site-title" href="{% url 'home_page' %}">Tech With Omid | امید محمدی</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -54,36 +56,37 @@
 
     <div class="row">
 
-        <!--content section-->
-        {% block content %}
-            <!-- Blog Entries Column -->
+      <!--content section-->
+      {% block content %}
+      <!-- Blog Entries Column -->
       <div class="col-md-8">
 
         <h1 class="my-3 site-header">
-          <small>جایی برای نوشتن تجربیات و دانسته هام</small>
+          <small>جایی برای نوشتن از تجربیات و دانسته هایم</small>
         </h1>
-        <hr>
 
-          {% for article in articles %}
+        {% for article in articles %}
         <!-- Blog Post -->
-        <div class="card mb-4">
-          <img class="card-img-top" src="{{ article.cover.url}}" alt="Card image cap"
-               width="750px", height="350px">
+        <div class="card mb-4 shadow p-3 mb-5 mt-4 bg-white rounded">
+          <img class="card-img-top" src="{{ article.cover.url}}" alt="Card image cap" width="750px" , height="350px">
           <div class="card-body">
+            <!-- article info - author, data -->
+            <h6 class="lead mb-3 article-info">
+              <spam>نویسنده:
+                <a href="#">{{ article.author }}</a></spam> |
+              <spam class="text-muted small">منتشر شده در : {{ article.created_date|date }}</spam>
+            </h6>
+
             <a href="{% url 'content_page' article.id %}?article={{ article.id }}">
               <h2 class="card-title">{{ article.title}}</h2>
             </a>
             <p class="card-text">
-                {{ article.content|truncatechars:256 | safe }}
+              {{ article.content|truncatechars:256 | safe }}
             </p>
-            <a href="#" class="badge badge-info pager-button">بیشتر &#8592; </a>
           </div>
-          <div class="card-footer text-muted">
-            منتشر شده در {{ article.created_date|date}} توسط
-            <a href="#">{{ article.author }}</a>
-          </div>
+
         </div>
-              {% endfor %}
+        {% endfor %}
 
 
         <!-- Pagination -->
@@ -93,11 +96,11 @@
             <a class="page-link" href="?page={{ articles.previous_page_number }}">&rarr; قدیمی‌تر</a>
           </li>
           {% endif %}
-              {% for page in articles.paginator.page_range %}
-                <li class="page-item disabled">
-                  <li><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
-                </li>
-             {% endfor%}
+          {% for page in articles.paginator.page_range %}
+          <li class="page-item disabled">
+          <li><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+          </li>
+          {% endfor%}
           {% if articles.has_next %}
           <li class="page-item">
             <a class="page-link" href="?page={{ articles.next_page_number }}">جدیدتر&larr;</a>
@@ -106,27 +109,27 @@
         </ul>
 
       </div>
-        {% endblock %}
+      {% endblock %}
 
       <!-- Sidebar Widgets Column -->
       <div class="col-md-4">
 
         <!-- Search Widget -->
-        <div class="card my-4">
-          <h5 class="card-header">سرچ</h5>
+        <div class="card my-4 shadow bg-white rounded">
+          <!-- <h5 class="card-header">سرچ</h5> -->
           <div class="card-body">
             <form class="form-inline" action="{% url 'search_article' %}">
-                <input type="text" name="q" class="form-control" placeholder="دنبال چی میگردی؟">
-                <button class="btn btn-secondary m-1">برو!</button>
+              <input type="text" name="q" class="form-control" placeholder="دنبال چیزی میگردی؟">
+              <button class="btn btn-secondary m-1">برو!</button>
             </form>
           </div>
         </div>
 
-    <!-- Categories Widget -->
-    <div class="card my-4">
-          <h5 class="card-header">دسته بندی</h5>
+        <!-- Categories Widget -->
+        <div class="card my-4 shadow bg-white rounded">
+          <h5 class="card-header bg-white">دسته بندی</h5>
           <div class="card-body">
-              {% for category in categorys %}
+            {% for category in categorys %}
             <div class="row">
               <div class="col-lg-6">
                 <ul class="list-unstyled mb-0">
@@ -137,7 +140,7 @@
                 </ul>
               </div>
             </div>
-             {% endfor %}
+            {% endfor %}
 
           </div>
         </div>
@@ -159,8 +162,12 @@
   </footer>
 
   <!-- Bootstrap core JavaScript -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous">
+  </script>
 
 </body>
 

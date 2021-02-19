@@ -28,7 +28,7 @@ body {
 }
 
 .site-header{
-	font-size: 100px;
+	font-size: 40px;
 }
 
 @media screen and (max-width: 950px) {
@@ -42,3 +42,12 @@ body {
  }}
 
 
+.no-comment{
+  text-align: center;
+   margin-bottom: 100px; 
+   margin-top: 50px;
+}
+
+.article-info{
+  font-size: 15px;
+}

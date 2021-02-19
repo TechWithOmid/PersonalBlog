@@ -42,3 +42,12 @@ body {
  }}
 
 
+.no-comment{
+  text-align: center;
+   margin-bottom: 100px; 
+   margin-top: 50px;
+}
+
+.article-info{
+  font-size: 15px;
+}
