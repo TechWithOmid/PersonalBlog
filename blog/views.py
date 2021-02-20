@@ -88,7 +88,9 @@ def ArticleDetail(request, **kwargs):
             new_comment.save()
         if reply_comment_form.is_valid():
             new_reply = reply_comment_form.save(commit=False)
-            #  try to access comment id 
+            commentId = request.POST.get('comment_id')
+            commentId = Comment.objects.get(pk=commentId)
+            new_reply.comment = commentId
             new_reply.save()
     else:
         comment_form = CommentForm()
