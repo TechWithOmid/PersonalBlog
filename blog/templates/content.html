@@ -1,79 +1,128 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    {{ article.title }}
+{{ article.title }}
 {% endblock %}
 
 {% block content %}
+
+
+<div class="col-lg-8">
     <div>
-           <!-- Title -->
-            <h1 class="mt-4">{{ article.title }}</h1>
+        <!-- Title -->
+        <h1 class="mt-4">{{ article.title }}</h1>
 
-            <!-- Author -->
-            <h6 class="lead mt-3 mb-3 article-info">
-                <spam>نویسنده:
+        <!-- Author -->
+        <h6 class="lead mt-3 mb-3 article-info">
+            <spam>نویسنده:
                 <a href="#">{{ article.author }}</a></spam> |
-                <spam class="text-muted small">منتشر شده در : {{ article.created_date|date }}</spam>
-            </h6></div>
-    <div class="col-lg-8">
-        <div class="shadow p-3 mb-5 mt-4 bg-white rounded">
+            <spam class="text-muted small">منتشر شده در : {{ article.created_date|date }}</spam>
+        </h6>
+    </div>
+    <div class="shadow p-3 mb-5 mt-4 bg-white rounded">
 
 
-            <!-- Preview Image -->
-            <img class="img-fluid rounded mb-4 mt-4" src="{{ article.cover.url }}" width="900" height="300"
-                 alt="{{ article.title }}">
+        <!-- Preview Image -->
+        <img class="img-fluid rounded mb-4 mt-4" src="{{ article.cover.url }}" width="900" height="300"
+            alt="{{ article.title }}">
 
 
-            <p>{{ article.content|safe }}</p>
-
-        </div>
-        <br><br>
-
-        <!-- Single Comment -->
-        <div style="margin-bottom: 100px">
-            <h3>نظرات</h3>
-            <hr>
-
-            {% if new_comment %}
-                <h4>نظر شما در انتظار تایید است.</h4>
-            {% else %}
-                  <div class="shadow p-3 mb-5 bg-white rounded">
-                    <form method="post">
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                {% csrf_token %}
-                                {{ comment_form.name }}
-                            </div>
-                            <div class="form-group col-md-6">
-                                {{ comment_form.email }}
-                            </div>
-                        </div>
-                        <div class="form-group comemnt-field">
-                            {{ comment_form.body }}
-                        </div>
-
-                        <button type="submit" class="btn btn-success">ارسال</button>
-                    </form>
-                </div>
-            {% endif %}
-
-            {% for comment in comments %}
-                <div class="comments shadow p-3 mb-5 bg-white rounded" style="padding: 20px;">
-                    <p class="font-weight-bold">
-                        {{ comment.name }}
-                        <span class=" text-muted font-weight-normal">
-                            {{ comment.comment_date }}
-                        </span>
-                    </p>
-                    {{ comment.body | linebreaks }}
-                </div>
-            {% empty %}
-                <h4 class="no-comment">کامنتی وجود ندارد ...</h4>
-            {% endfor %}
-        </div>
+        <p>{{ article.content|safe }}</p>
 
     </div>
+    <br><br>
+
+    <div style="margin-bottom: 100px">
+        <h3>نظرات</h3>
+        <hr>
+        <!-- Create Comment -->
+        {% if new_comment %}
+        <h4>نظر شما در انتظار تایید است.</h4>
+        {% else %}
+        <div class="shadow p-3 mb-5 bg-white rounded">
+            <form method="post">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        {% csrf_token %}
+                        {{ comment_form.name }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ comment_form.email }}
+                    </div>
+                </div>
+                <div class="form-group comemnt-field">
+                    {{ comment_form.body }}
+                </div>
+
+                <button type="submit" class="btn btn-success">ارسال</button>
+            </form>
+        </div>
+        {% endif %}
+
+        {% for comment in comments %}
+        <div class="comments shadow p-3 mt-5 bg-white rounded" style="padding: 20px;">
+            <p class="font-weight-bold">
+                {{ comment.name }}
+                <span class=" text-muted font-weight-normal">
+                    {{ comment.comment_date }}
+                </span>
+            </p>
+            {{ comment.body | linebreaks }}
+            <a href="#reply{{ comment.id }}" data-toggle="collapse">پاسخ دادن</a>
+            <div class="collapse" id="reply{{ comment.id }}">
+                <form method="post">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            {% csrf_token %}
+                            {{ reply_comment_form.name }}
+                        </div>
+                        <div class="form-group col-md-6">
+                            {{ reply_comment_form.email }}
+                        </div>
+                    </div>
+                    <div class="form-group comemnt-field">
+                        {{ reply_comment_form.reply_body }}
+                    </div>
+                    <button type="submit" class="btn btn-success">ارسال</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- comment replies -->
+        {% for reply in comment.recomment.all %}
+        <div class="comments shadow p-3 mt-2 mr-5 bg-white rounded" style="padding: 20px;">
+            <p class="font-weight-bold">
+                {{ reply.name }}
+                <span class=" text-muted font-weight-normal">
+                    {{ reply.comment_date }}
+                </span>
+            </p>
+            {{ reply.reply_body | linebreaks }}
+            <a href="#reply-to-reply{{ reply.id }}" data-toggle="collapse">پاسخ دادن</a>
+            <div class="collapse" id="reply-to-reply{{ reply.id }}">
+                <form method="post">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            {% csrf_token %}
+                            {{ comment_form.name }}
+                        </div>
+                        <div class="form-group col-md-6">
+                            {{ comment_form.email }}
+                        </div>
+                    </div>
+                    <div class="form-group comemnt-field">
+                        {{ comment_form.body }}
+                    </div>
+
+                    <button type="submit" class="btn btn-success">ارسال</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+        {% endfor %}
+    </div>
+
+</div>
 
 
 {% endblock %}
-

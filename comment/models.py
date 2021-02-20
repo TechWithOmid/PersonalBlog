@@ -8,18 +8,18 @@ class Comment(models.Model):
     email = models.EmailField()
     body = models.TextField()
     comment_date = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.article.title
+        return self.name
 
 
 class ReplyComment(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="recomment")
     name = models.CharField(max_length=80)
     email = models.EmailField()
-    body = models.TextField()
+    reply_body = models.TextField()
     comment_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.comment.article.title
+        return self.name

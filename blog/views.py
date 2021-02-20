@@ -3,6 +3,8 @@ from django.views.generic import TemplateView
 from .models import Article, Category
 from django.core.paginator import Paginator
 from django.db.models import Q
+from comment.models import Comment, ReplyComment
+from comment.forms import CommentForm, ReplyCommentForm
 
 
 class HomePage(TemplateView):
@@ -74,58 +76,30 @@ def ArticleDetail(request, **kwargs):
     article_id = kwargs.get('article_id')
     article = Article.objects.filter(publish_status='p')
     article = get_object_or_404(article, pk=article_id)
+    comments = Comment.objects.filter(article=article)
+    new_comment = None
+
+    if request.method == 'POST':
+        comment_form = CommentForm(data=request.POST)
+        reply_comment_form = ReplyCommentForm(data=request.POST)
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.article = article
+            new_comment.save()
+        if reply_comment_form.is_valid():
+            new_reply = reply_comment_form.save(commit=False)
+            #  try to access comment id 
+            new_reply.save()
+    else:
+        comment_form = CommentForm()
+        reply_comment_form = ReplyCommentForm()
 
     context = {
         'article': article,
         'categorys': category,
+        'comments': comments,
+        'comment_form': comment_form,
+        'reply_comment_form': reply_comment_form,
     }
     return render(request, 'content.html', context)
 
-
-# def ArticleComment(request, **kwargs):
-#     article_id = kwargs.get('article_id')
-#     category = Category.objects.all()
-#     new_comment = None
-#
-#     if request == 'POST':
-#         comment_form = CommentForm(data=request.POST)
-#         if comment_form.is_valid():
-#             new_comment = comment_form.save(commit=False)
-#             new_comment.article = article_id
-#             new_comment.save()
-#     else:
-#         comment_form = CommentForm()
-#
-#     context = {
-#         'categorys': category,
-#         'new_comment': new_comment,
-#         'comment_form': comment_form,
-#     }
-#
-
-# def ArticleDetail(request, **kwargs):
-#     category = Category.objects.all()
-#     article_id = kwargs.get('article_id')
-#     a = Article.objects.filter(publish_status='p')
-#     article = get_object_or_404(a, pk=article_id)
-#
-#     comments = Comment.objects.filter(active=True, article=article_id)
-#     new_comment = None
-#
-#     if request.method == 'POST':
-#         comment_form = CommentForm(data=request.POST)
-#         if comment_form.is_valid():
-#             new_comment = comment_form.save(commit=False)
-#             new_comment.article = article
-#             new_comment.save()
-#     else:
-#         comment_form = CommentForm()
-#
-#     context = {
-#         'article': article,
-#         'categorys': category,
-#         'comments': comments,
-#         'new_comment': new_comment,
-#         'comment_form': comment_form,
-#     }
-#     return render(request, 'content.html', context)

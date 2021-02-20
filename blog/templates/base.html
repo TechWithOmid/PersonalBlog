@@ -77,7 +77,7 @@
               <spam class="text-muted small">منتشر شده در : {{ article.created_date|date }}</spam>
             </h6>
 
-            <a href="{% url 'content_page' article.id %}?article={{ article.id }}">
+            <a href="{% url 'content_page' article.id %}">
               <h2 class="card-title">{{ article.title}}</h2>
             </a>
             <p class="card-text">
