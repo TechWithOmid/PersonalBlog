@@ -51,3 +51,7 @@ body {
 .article-info{
   font-size: 15px;
 }
+
+.tags{
+  margin: 6px;
+}

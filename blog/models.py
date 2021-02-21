@@ -24,11 +24,13 @@ class Article(models.Model):
     )
 
     title = models.CharField(max_length=128, null=False, blank=False, verbose_name="عنوان")
-    cover = models.ImageField(upload_to='files/images/article_cover/', verbose_name="تصویر")
+    cover = models.ImageField(upload_to='files/images/article_cover/', verbose_name="تصویر", blank=True)
     content = RichTextField(verbose_name="محتوا")
     created_date = models.DateTimeField(default=timezone.now, verbose_name="تاریخ انتشار")
     author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name="نویسنده")
-    category = models.ManyToManyField('Category', verbose_name="دسته‌بندی")
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name="دسته‌بندی", blank=True, null=True)
+    # category = models.ManyToManyField('Category', blank=True, verbose_name="دسته بندی")
+    tags = models.ManyToManyField('Tags', verbose_name="تگ", blank=True, related_name="articles")
     publish_status = models.CharField(max_length=1, choices=publish_choices, null=False,
                                       blank=False, default='d', verbose_name="وضعیت انتشار")
 
@@ -50,3 +52,14 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
+
+class Tags(models.Model):
+    title = models.CharField(max_length=128, verbose_name="نام تگ")
+    slug = models.SlugField(verbose_name="نام لاتین")
+
+    class Meta:
+        verbose_name = "تگ"
+        verbose_name_plural = "تگ ها"
+
+    def __str__(self):
+        return self.title
