@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView
-from .models import Article, Category, Tags
+from .models import Article, Category, Tags, IPAddress
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, F
 from comment.models import Comment, ReplyComment
 from comment.forms import CommentForm, ReplyCommentForm
+from django.db.models import Count
 
 
 class HomePage(TemplateView):
@@ -12,7 +13,8 @@ class HomePage(TemplateView):
     def get(self, request, format=None):
         category = Category.objects.all()
         tags = Tags.objects.all()
-        article_list = Article.objects.filter(publish_status='p').order_by('-created_date')
+        article_hits = Article.objects.filter(publish_status='p').annotate(count=Count('hits')).order_by('-created_date')
+        article_list = Article.objects.filter(publish_status='p').order_by('created_date')
         paginator = Paginator(article_list, 6)
 
         page_number = request.GET.get('page')
@@ -21,7 +23,8 @@ class HomePage(TemplateView):
         context = {
             'articles': articles,
             'categorys': category,
-            'tags': tags
+            'tags': tags,
+            'article_hits': article_hits,
         }
 
         return render(request, 'base.html', context)
@@ -31,6 +34,7 @@ class CategoryPage(TemplateView):
     def get(self, request, format=None, **kwargs):
         cataeorys = Category.objects.all()
         tags = Tags.objects.all()
+        article_hits = Article.objects.filter(publish_status='p').annotate(count=Count('hits')).order_by('created_date')
         category_id = self.kwargs.get('category_id')
         articles = Article.objects.filter(
             category=category_id, publish_status='p'
@@ -47,6 +51,7 @@ class CategoryPage(TemplateView):
             'categorys': cataeorys,
             'data': data,
             'tags': tags,
+            'article_hits': article_hits,
         }
 
         return render(request, 'category.html', context)
@@ -71,6 +76,7 @@ class SearchArticle(TemplateView):
             'categorys': cataeorys,
             'searched': searched_key,
             'tags': tags,
+            'article_hits': article_hits,
         }
 
         return render(request, 'search_result.html', context)
@@ -79,11 +85,18 @@ class SearchArticle(TemplateView):
 def ArticleDetail(request, **kwargs):
     category = Category.objects.all()
     tags = Tags.objects.all()
+    article_hits = Article.objects.filter(publish_status='p').annotate(count=Count('hits')).order_by('created_date')
     article_id = kwargs.get('article_id')
     article = Article.objects.filter(publish_status='p')
     article = get_object_or_404(article, pk=article_id)
     comments = Comment.objects.filter(article=article)
     new_comment = None
+
+
+    ip_address = request.user.ip_address
+    if ip_address not in article.hits.all():
+        article.hits.add(ip_address)
+
 
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
@@ -109,6 +122,14 @@ def ArticleDetail(request, **kwargs):
         'comment_form': comment_form,
         'reply_comment_form': reply_comment_form,
         'tags': tags,
+        'article_hits': article_hits,
     }
     return render(request, 'content.html', context)
 
+
+def TagView(request, slug):
+    articles = Article.objects.all() 
+    context = {
+        'articles': articles,
+    }
+    return render(request, 'tags.html', context)   

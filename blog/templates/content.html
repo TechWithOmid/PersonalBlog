@@ -14,9 +14,10 @@
 
         <!-- Author -->
         <h6 class="lead mt-3 mb-3 article-info">
-            <spam>نویسنده:
-                <a href="#">{{ article.author }}</a></spam> |
-            <spam class="text-muted small">منتشر شده در : {{ article.created_date|date }}</spam>
+            <span>نویسنده:
+                <a href="#">{{ article.author }}</a></span> |
+            <span class="text-muted small">منتشر شده در : {{ article.created_date|date }}</span> |
+            <span class="small"> بازدید ها: {{article.hits.count}}</span>
         </h6>
     </div>
     <div class="shadow p-3 mb-5 mt-4 bg-white rounded">

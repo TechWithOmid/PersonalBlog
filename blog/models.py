@@ -28,9 +28,9 @@ class Article(models.Model):
     content = RichTextField(verbose_name="محتوا")
     created_date = models.DateTimeField(default=timezone.now, verbose_name="تاریخ انتشار")
     author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name="نویسنده")
+    hits = models.ManyToManyField('IPAddress', through="ArtcileHits",related_name="hits", verbose_name="بازدیدها", blank=True)
     category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name="دسته‌بندی", blank=True, null=True)
-    # category = models.ManyToManyField('Category', blank=True, verbose_name="دسته بندی")
-    tags = models.ManyToManyField('Tags', verbose_name="تگ", blank=True, related_name="articles")
+    tags = models.ManyToManyField("Tags", verbose_name="تگ",blank=True, related_name="articles")
     publish_status = models.CharField(max_length=1, choices=publish_choices, null=False,
                                       blank=False, default='d', verbose_name="وضعیت انتشار")
 
@@ -63,3 +63,16 @@ class Tags(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class IPAddress(models.Model):
+    ip_address = models.GenericIPAddressField(verbose_name="آی‌پی آدرس")
+
+    def __str__(self):
+        return self.ip_address
+
+
+class ArtcileHits(models.Model):
+    article =  models.ForeignKey(Article, on_delete=models.CASCADE) 
+    ip = models.ForeignKey(IPAddress, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)

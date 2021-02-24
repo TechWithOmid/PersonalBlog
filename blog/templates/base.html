@@ -151,17 +151,33 @@
           <h5 class="card-header bg-white">برچسب ها</h5>
           <div class="card-body">
             {% for tag in tags %}
-              <a href="#" class="tags"> {{ tag.title }} </a>
+            <a href="#" class="tags"> {{ tag.title }} </a>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Categories Widget -->
+        <div class="card my-4 shadow bg-white rounded">
+          <h5 class="card-header bg-white">مقالات پر‌بازدید</h5>
+          <div class="card-body">
+            {% for hits in article_hits %}
+            <div class="row">
+              <ul class="list-unstyled mb-0">
+                <li>
+                  <a href="{% url 'content_page' hits.id %}">{{ hits.title }}</a>
+                </li>
+              </ul>
+            </div>
             {% endfor %}
           </div>
         </div>
 
 
 
-    </div>
+      </div>
 
-  </div>
-  <!-- /.row -->
+    </div>
+    <!-- /.row -->
 
   </div>
   <!-- /.container -->
