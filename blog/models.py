@@ -17,31 +17,6 @@ class Author(models.Model):
         return self.name
 
 
-class Article(models.Model):
-    publish_choices = (
-        ('p', 'Publish'),
-        ('d', 'Draft'),
-    )
-
-    title = models.CharField(max_length=128, null=False, blank=False, verbose_name="عنوان")
-    cover = models.ImageField(upload_to='files/images/article_cover/', verbose_name="تصویر", blank=True)
-    content = RichTextField(verbose_name="محتوا")
-    created_date = models.DateTimeField(default=timezone.now, verbose_name="تاریخ انتشار")
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name="نویسنده")
-    hits = models.ManyToManyField('IPAddress', through="ArtcileHits",related_name="hits", verbose_name="بازدیدها", blank=True)
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name="دسته‌بندی", blank=True, null=True)
-    tags = models.ManyToManyField("Tags", verbose_name="تگ",blank=True, related_name="articles")
-    publish_status = models.CharField(max_length=1, choices=publish_choices, null=False,
-                                      blank=False, default='d', verbose_name="وضعیت انتشار")
-
-    class Meta:
-        verbose_name = "مقاله"
-        verbose_name_plural = "مقالات"
-
-    def __str__(self):
-        return self.title
-
-
 class Category(models.Model):
     title = models.CharField(max_length=128, verbose_name="نام دسته‌بندی")
 
@@ -70,6 +45,31 @@ class IPAddress(models.Model):
 
     def __str__(self):
         return self.ip_address
+
+
+class Article(models.Model):
+    publish_choices = (
+        ('p', 'Publish'),
+        ('d', 'Draft'),
+    )
+
+    title = models.CharField(max_length=128, null=False, blank=False, verbose_name="عنوان")
+    cover = models.ImageField(upload_to='files/images/article_cover/', verbose_name="تصویر", blank=True)
+    content = RichTextField(verbose_name="محتوا")
+    created_date = models.DateTimeField(default=timezone.now, verbose_name="تاریخ انتشار")
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name="نویسنده")
+    hits = models.ManyToManyField(IPAddress,related_name="hits", through="ArtcileHits", verbose_name="بازدیدها", blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="دسته‌بندی", blank=True, null=True)
+    tags = models.ManyToManyField(Tags, verbose_name="تگ",blank=True, related_name="articles")
+    publish_status = models.CharField(max_length=1, choices=publish_choices, null=False,
+                                      blank=False, default='d', verbose_name="وضعیت انتشار")
+
+    class Meta:
+        verbose_name = "مقاله"
+        verbose_name_plural = "مقالات"
+
+    def __str__(self):
+        return self.title
 
 
 class ArtcileHits(models.Model):

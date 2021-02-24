@@ -27,7 +27,7 @@ class HomePage(TemplateView):
             'article_hits': article_hits,
         }
 
-        return render(request, 'base.html', context)
+        return render(request, 'blog/base.html', context)
 
 
 class CategoryPage(TemplateView):
@@ -54,7 +54,7 @@ class CategoryPage(TemplateView):
             'article_hits': article_hits,
         }
 
-        return render(request, 'category.html', context)
+        return render(request, 'blog/category.html', context)
 
 
 class SearchArticle(TemplateView):
@@ -79,7 +79,7 @@ class SearchArticle(TemplateView):
             'article_hits': article_hits,
         }
 
-        return render(request, 'search_result.html', context)
+        return render(request, 'blog/search_result.html', context)
 
 
 def ArticleDetail(request, **kwargs):
@@ -105,12 +105,15 @@ def ArticleDetail(request, **kwargs):
             new_comment = comment_form.save(commit=False)
             new_comment.article = article
             new_comment.save()
+            comment_form = CommentForm()
         if reply_comment_form.is_valid():
             new_reply = reply_comment_form.save(commit=False)
             commentId = request.POST.get('comment_id')
             commentId = Comment.objects.get(pk=commentId)
             new_reply.comment = commentId
             new_reply.save()
+            reply_comment_form = ReplyCommentForm()
+
     else:
         comment_form = CommentForm()
         reply_comment_form = ReplyCommentForm()
@@ -124,7 +127,7 @@ def ArticleDetail(request, **kwargs):
         'tags': tags,
         'article_hits': article_hits,
     }
-    return render(request, 'content.html', context)
+    return render(request, 'blog/content.html', context)
 
 
 def TagView(request, slug):
@@ -132,4 +135,4 @@ def TagView(request, slug):
     context = {
         'articles': articles,
     }
-    return render(request, 'tags.html', context)   
+    return render(request, 'blog/tags.html', context)   

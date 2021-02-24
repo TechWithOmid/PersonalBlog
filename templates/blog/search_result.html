@@ -1,0 +1,42 @@
+{% extends 'blog/base.html' %}
+
+{% block title %} | {{ searched }}{% endblock %}
+
+{% block content %}
+
+    <!-- Blog Entries Column -->
+    <div class="col-md-8">
+
+        <h1 class="my-3 site-header">
+            <small>جایی برای نوشتن تجربیات و دانسته هایم</small>
+        </h1>
+        <hr>
+
+        {% if articles %}
+            {% for article in articles %}
+                <!-- Blog Post -->
+                <div class="card mb-4">
+                    <img class="card-img-top" src="{{ article.cover.url }}" alt="Card image cap"
+                         width="750px" , height="350px">
+                    <div class="card-body">
+                        <a href="{% url 'content_page' article.id %}">
+                            <h2 class="card-title">{{ article.title }}</h2>
+                        </a>
+                        <p class="card-text">
+                            {{ article.content|truncatechars:256 | safe }}
+                        </p>
+                        <a href="#" class="badge badge-info pager-button">بیشتر &#8592; </a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        منتشر شده در {{ article.created_date|date }} توسط
+                        <a href="#">{{ article.author }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <!-- Pagination -->
+        {% endif %}
+
+    </div>
+{% endblock %}
+
