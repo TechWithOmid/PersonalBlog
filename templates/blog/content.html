@@ -7,8 +7,6 @@
 
 {% block content %}
 
-
-<div class="col-lg-8">
     <div>
         <!-- Title -->
         <h1 class="mt-4">{{ article.title }}</h1>
@@ -33,9 +31,14 @@
 
         <p>{{ article.content|safe }}</p>
 
+        <div class="tag-section">
+            {% for tag in article_tags %}
+                <a href="#" class="tag">#{{tag.title}}</a>
+            {% endfor %}
+        </div>
     </div>
-    <br><br>
 
+    <!-- Comment Section -->
     <div style="margin-bottom: 100px">
         <h3>نظرات ({{comments.count}})</h3>
         <hr>
@@ -63,6 +66,7 @@
         </div>
         {% endif %}
 
+        <!-- Comments -->
         {% for comment in comments %}
         <div class="comments shadow p-3 mt-5 bg-white rounded" style="padding: 20px;">
             <p class="font-weight-bold">
@@ -128,8 +132,4 @@
         {% endfor %}
         {% endfor %}
     </div>
-
-</div>
-
-
 {% endblock %}

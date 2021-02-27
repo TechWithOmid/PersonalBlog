@@ -19,6 +19,7 @@ class Author(models.Model):
 
 class Category(models.Model):
     title = models.CharField(max_length=128, verbose_name="نام دسته‌بندی")
+    slug = models.SlugField(verbose_name="نام لاتین")
 
     class Meta:
         verbose_name = "دسته‌بندی"
@@ -54,6 +55,7 @@ class Article(models.Model):
     )
 
     title = models.CharField(max_length=128, null=False, blank=False, verbose_name="عنوان")
+    slug = models.SlugField(verbose_name="آدرس")
     cover = models.ImageField(upload_to='files/images/article_cover/', verbose_name="تصویر", blank=True)
     content = RichTextField(verbose_name="محتوا")
     created_date = models.DateTimeField(default=timezone.now, verbose_name="تاریخ انتشار")

@@ -13,13 +13,14 @@
             {% endif %}
             <div class="card-body">
                 <!-- article info - author, data -->
-                <h6 class="lead mb-3 article-info">
-                    <spam>نویسنده:
-                        <a href="#">{{ article.author }}</a></spam> |
-                    <spam class="text-muted small">منتشر شده در : {{ article.created_date|date }}</spam>
+                <h6 class="lead mt-3 mb-3 article-info">
+                    <span>نویسنده:
+                        <a href="#">{{ article.author }}</a></span> |
+                        <span class="small"> بازدید ها: {{article.hits.count}}</span> | 
+                        <span class="text-muted small">منتشر شده در : {{ article.created_date|date }}</span>
                 </h6>
 
-                <a href="{% url 'content_page' article.id %}">
+                <a href="{% url 'content_page' article.slug %}">
                     <h2 class="card-title">{{ article.title}}</h2>
                 </a>
                 <p class="card-text">
@@ -30,7 +31,6 @@
     {% endfor %}
 
 {% endblock %}
-
 
 {% block pagination %}
 <!-- Pagination -->
